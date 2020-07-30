@@ -1,0 +1,13 @@
+\section{Introduction}
+In this study, the market clearing problem of a 24-node IEEE RTS system \cite{Ordoudis2016} is investigated. As recommended, six 200 MW wind turbines are included in the system at various nodes to represent highly penetrated renewable energy generation. Section \ref{sec:deter} presents the deterministic market clearing problem in its primary form, dual form and also its Karush–Kuhn–Tucker (KKT) conditions. In section \ref{sec:stochastic}, wind scenarios and real-time clearance are considered, presenting a two-stage stochastic programming problem. The linear programming (LP) problem is solved directly by a commercial solver. In section \ref{benders}, the above stochastic market clearing problem is solved in a distributed algorithm, Benders decomposition. The problem is augmented into a bi-level optimization problem in section \ref{bilevel} considering a strategic generator. 
+
+Following assumptions are made throughout this study.
+\begin{itemize}
+\item The upward regulation price is 10\% higher than the DA offering for each generator. The downward regulation price is 10\% lower then the DA offering.
+    % \item The generators are all assumed as completely flexible generators and the real-time regulating price is assumed the same as day-ahead offer price.
+    \item The minimum power requirement of each generator upon dispatch is not considered. Otherwise, it would introduce additional binary variables and thus non-convexity to the model.
+    % , such as the constraint below, where $\delta_g^G$ represents the on/off state of individual generator.
+\end{itemize}
+% \begin{equation}
+%      P_g^G \geq P_g^{min} \delta_g^G
+% \end{equation}

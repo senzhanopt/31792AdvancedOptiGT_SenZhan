@@ -1,0 +1,106 @@
+\section{Stochastic market clearing} \label{sec:stochastic}
+\subsection{Problem formulation}
+In this section, the mathematical model of a stochastic market clearing problem is presented. The uncertainties with wind power generation are modeled with scenarios. The objective (\ref{2.obj}) aims at minimizing the DA and real-time markets costs. (\ref{2.production})-(\ref{2.ref}) remains the same as before in the deterministic model. (\ref{2.productionSCE})-(\ref{2.shedding}) represents the constraints for real-time adjustments of generators, wind power spill and load shedding respectively. The real-time power balance is shown as (\ref{2.balanceSCE}). 
+\begin{subequations}
+\begin{equation} \label{2.obj}
+\begin{split}
+    \underset{p_g^{DA}, P_w^{DA}, \theta_n^{DA},p_{g,s}^{RT,+},p_{g,s}^{RT,-}, \theta_{n,s}^{RT}, p_{w,s}^{spill}, p_{d,s}^{shed}}{\min} \hspace{8cm}\\ \left \{\sum_g C_g P_g^{DA} + \sum_s \Phi_s\left( \sum_g  C_g^+ p_{g,s}^{+} - \sum_g  C_g^- p_{g,s}^{-} + C^{voll}\sum_d p_{d,s}^{shed}\right) \right\}
+    \end{split}
+\end{equation}
+\quad \text{S.t.}
+\begin{equation}\label{2.production}
+ 0 \leq p_{g}^{\mathrm{DA}} \leq {P}_{g}^{max}, \forall g
+\end{equation}
+\begin{equation} \label{2.wind}
+   0 \leq p_w^{DA} \leq P_w^{Cap}, \forall w
+\end{equation}
+\begin{equation}\label{2.balance}
+\sum_{d \in \Psi_{n}} p_{d}^{\mathrm{D}}+\sum_{m \in \Omega_{n}} B_{n, m}\left(\theta_{n}^{DA}-\theta_{m}^{DA}\right)-\sum_{g \in \Psi_{n}} p_{g}^{\mathrm{DA}} - \sum_{w \in \Psi_{n}} p_{w}^{DA} =0 : \quad \lambda_n^{DA}, \forall n
+\end{equation}
+\begin{equation}\label{2.flow}
+-F_{n, m} \leq B_{n, m}\left(\theta_{n}^{DA}-\theta_{m}^{DA}\right) \leq F_{n, m},  \forall n, \forall m \in \Omega_{n}
+\end{equation}
+\begin{equation}\label{2.ref}
+\theta^{DA}_{(n=r e f)}=0
+\end{equation}
+\begin{equation}\label{2.productionSCE}
+ 0 \leq p_{g}^{\mathrm{DA}} + p_{g,s}^{+}-p_{g,s}^{-} \leq {P}_{g}^{max}, \forall g, \forall s
+\end{equation}
+\begin{equation} \label{2.spill}
+    0 \leq p_{w,s}^{spill} \leq p_{w,s}^{RT}, \forall w, \forall s
+\end{equation}
+\begin{equation} \label{2.gene}
+    p_{g,s}^+, p_{g,s}^- \geq 0, \forall g, \forall s
+\end{equation}
+\begin{equation}\label{2.shedding}
+    0 \leq p_{d,s}^{shed} \leq p_d^D, \forall d, \forall s
+\end{equation}
+\begin{equation}\label{2.balanceSCE}
+\begin{split}
+\sum_{d \in \Psi_{n}} (- p_{d,s}^{shed})+\sum_{m \in \Omega_{n}} B_{n, m}\left(\theta_{n,s}^{RT}-\theta_{m,s}^{RT}-\theta_{n}^{DA}+\theta_{m}^{DA}\right)-\sum_{g \in \Psi_{n}} (p_{g,s}^{+}-p_{g,s}^{-}) \hspace{2cm} \\- \sum_{w \in \Psi_{n}} (P_{w,s}^{RT}-P_w^{DA}-p_{w,s}^{spill}) =0 :\lambda_{n,s}^{RT}, \forall n, \forall s
+\end{split}
+\end{equation}
+\begin{equation}\label{2.flowSCE}
+-F_{n, m} \leq B_{n, m}\left(\theta_{n,s}^{RT}-\theta_{m,s}^{RT}\right) \leq F_{n, m},  \forall n, \forall m , \forall s
+\end{equation}
+\begin{equation}\label{2.refSCE}
+\theta^{RT}_{(n=r e f),s}=0, \forall s
+\end{equation}
+\end{subequations}
+
+\subsection{Case study}
+In our case, the real-time adjustment costs for generators are assumed as 10\% higher for upward regulation and 10\% lower for downward regulation. In all, 100 scenarios are obtained from \cite{web}. Certain number of scenarios are randomly chosen to run the program. Afterwards, an out-of-sample analysis is run by fixing the DA stage variables and solving the RT stage problems. The results are listed on tab. \ref{tab:stocha}, with the same scenario number indicating repeated tests. It is shown that even the chosen scenarios reach half of the sample space, the objective gap between sample and out-of-sample analysis can still be more than 5\%. Therefore, a systematic way of choosing scenarios is needed. 
+
+In the following, the K-means clustering method is used. K-means partitions n observations into k clusters in which each observation belongs to the cluster with the nearest mean. In this study, the "kmeans" function on Matlab is used, which employs a heuristic method. The results are shown on tab.\ref{tab:stochaKmeans}. The average gap has shown a downward trend as scenario number increases when using K-means method. However, this is not seen when randomly choosing scenario sample from the scenario set. Therefore, using a systematic method to choose scenarios and increasing the scenario number is necessary for the stochastic program to output unbiased results.  
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+      \textbf{Scenario number}   & \textbf{Objective}  & \textbf{Out-of-sample objective} &\textbf{Gap} &\textbf{Average absolute gap}\\
+         \hline
+     4   & \$6079& \$6073 & 0.1\% &2.46\%\\\hline
+      4    & \$5821& \$6087 & 4.6\% &\\\hline
+       4    & \$5920& \$6080 & 2.7\% &\\\hline
+            5   & \$5920& \$6094 & 2.9\%&3.3\% \\\hline
+      5    & \$6192& \$6070 & -2.0\%& \\\hline
+       5    & \$6392& \$6065 & -5.1\%& \\\hline
+                   10   & \$6172& \$6063 & -1.8\% &3.9\%\\\hline
+      10    & \$5750& \$6095 & 6.0\% &\\\hline
+       10    & \$5968& \$6089 & 3.8\% &\\\hline
+                          20   & \$6093& \$6062 & -0.5\%&3.0\% \\\hline
+      20    & \$6145& \$6062 & -1.4\% &\\\hline
+       20    & \$6445& \$5992 & -7.0\% &\\\hline
+           50   & \$5980& \$6123 & 2.4\%&3.8\% \\\hline
+     50 & \$6165& \$5988 & 2.9\%& \\\hline
+     50    & \$6333& \$5939 &-6.2\%& \\\hline
+    \end{tabular}
+    \caption{Running results by randomly choosing scenarios}
+    \label{tab:stocha}
+\end{table}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+      \textbf{Scenario number}   & \textbf{Objective}  & \textbf{Out-of-sample objective} &\textbf{Gap}&\textbf{Average absolute gap}\\
+         \hline
+     4   & \$6547& \$6077 & -7.2\% &4.9\%\\\hline
+     4   & \$6100& \$6076 & -0.4\%& \\\hline
+          4   & \$6549& \$6084 & -7.1\%& \\\hline
+      5    & \$6371& \$6070 & -4.7\% &5.0\% \\\hline
+           5    & \$6370& \$6071 & -4.7\% & \\\hline
+                5    & \$6431& \$6078 & -5.5\% &\\\hline
+       10    & \$6214& \$6070 & -2.3\%&3.8\% \\\hline
+        10    & \$6337& \$6071 & -4.2\%& \\\hline
+         10    & \$6381& \$6071 & -4.9\% &\\\hline
+            20   & \$6093& \$6070 & -0.4\% &3.2\%\\\hline
+             20   & \$6430& \$6073 & -5.6\% &\\\hline
+               20   & \$6302& \$6073 & -3.6\%& \\\hline
+      50  & \$6182& \$6070 & -1.8\%&2.0\% \\\hline
+       50  & \$6260& \$6070 & -3.0\% &\\\hline
+        50  & \$6140& \$6070 & -1.1\% &\\\hline
+    \end{tabular}
+    \caption{Running results by K-means}
+    \label{tab:stochaKmeans}
+\end{table}

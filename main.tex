@@ -1,0 +1,36 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, total={6in, 10in}]{geometry} %geometry package
+\usepackage{graphicx}
+\usepackage{float}% to avoid floating tables, pictures
+\usepackage[numbers,sort&compress]{natbib}%adjust reference format
+\usepackage{indentfirst}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{mwe}
+
+\begin{document}
+
+\input{front.tex}
+
+\newpage
+\pagenumbering{roman}
+\tableofcontents
+% \listoffigures
+% \listoftables
+
+\newpage
+\pagenumbering{arabic}
+\input{0.introduction.tex}
+\input{1.deterministic.tex}
+\input{2.stochastic.tex}
+\input{4.decomposition.tex}
+\input{3.bilevel.tex}
+\input{5.conclusion.tex}
+\newpage
+\bibliographystyle{unsrt}
+\bibliography{reference}
+\input{6.appendix}
+\end{document}

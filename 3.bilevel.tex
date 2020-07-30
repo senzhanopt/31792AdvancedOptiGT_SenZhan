@@ -1,0 +1,65 @@
+\section{Bi-level programming} \label{bilevel}
+\subsection{Problem formulation}
+In this section, the profit maximization problem of a strategic producer is presented. This problem is formulated as a bi-level programming problem. On the upper level, the strategic generator aims at maximizing its own profit by tuning the bid price, which is subject to market clearing, in which the market operator clears the market based on generator i and other generators' bids.
+\begin{subequations}
+\begin{equation} \label{5.obj}
+   \underset{\alpha_i}{\max} \left\{ (\lambda_{n(i\in \Psi_n)} - C_i )p_i
+    \right\}
+\end{equation}
+\begin{equation}
+\textbf{S.t.} \begin{cases}
+\underset{p_{g}^{G}, P_w^W, \theta_{n},p_{i}} \min \sum_{g} C_{g} p_{g}^{\mathrm{G}} + \alpha_i p_i&\\
+\text{S.t.} \quad \quad&\\
+0 \leq p_i \leq P_i^I: \underline{\mu}_{i}^{\mathrm{I}}, \bar{\mu}_{i}^{\mathrm{I}}&\\
+ 0 \leq p_{g}^{\mathrm{G}} \leq {P}_{g}^{max}: \underline{\mu}_{g}^{\mathrm{G}}, \bar{\mu}_{g}^{\mathrm{G}} \quad \forall g&\\
+   0 \leq p_w^W \leq P_w^{Cap} CF_w :\underline{\mu}_{w}^{\mathrm{W}}, \bar{\mu}_{w}^{\mathrm{W}} \quad \forall w&\\
+\sum_{d \in \Psi_{n}} p_{d}^{\mathrm{D}}+\sum_{m \in \Omega_{n}} B_{n, m}\left(\theta_{n}-\theta_{m}\right)-\sum_{g \in \Psi_{n}} p_{g}^{\mathrm{G}} - p_{i\in \Psi_n} -\sum_{w \in \Psi_{n}} p_{w}^{\mathrm{W}} =0 \quad: \lambda_{n} \quad \forall n&\\
+-F_{n, m} \leq B_{n, m}\left(\theta_{n}-\theta_{m}\right) \leq F_{n, m} \quad: \underline{\eta}_{n, m}, \bar{\eta}_{n, m} \quad \forall n, \forall m &\\
+\theta_{(n=r e f)}=0 \quad: \gamma&\\
+\end{cases}
+\end{equation}
+\end{subequations}
+
+In order to solve this problem, the lower level problem is replaced with its optimality KKT conditions, which gives:
+\begin{equation}
+    \begin{cases}
+   C_g + \bar{\mu}_g^G - \underline{\mu}_g^G - \lambda_{n(g \in \Psi_{n})} = 0 \quad:p_g^G, \forall g&\\
+   \bar{\mu}_w^W - \underline{\mu}_w^W - \lambda_{n(w\in\Psi_n)} = 0 \quad:p_w^W, \forall w &\\
+    \alpha_i + \bar{\mu}_i^I - \underline{\mu}_i^I - \lambda_{n(i \in \Psi_{n})} = 0 \quad:p_i&\\
+    \sum_{m \in \Omega_n}B_{n,m}(\lambda_n - \lambda_m + \bar{\eta}_{n,m}-\bar{\eta}_{m,n}-\underline{\eta}_{n,m}+\underline{\eta}_{m,n}) = 0 \quad: \theta_n, \forall n/ref&\\
+\sum_{m \in \Omega_n}B_{n,m}(\lambda_n - \lambda_m + \bar{\eta}_{n,m}-\bar{\eta}_{m,n}-\underline{\eta}_{n,m}+\underline{\eta}_{m,n})+\gamma = 0 \quad: \theta_n, n=ref&\\
+\sum_{d \in \Psi_{n}} p_{d}^{\mathrm{D}}+\sum_{m \in \Omega_{n}} B_{n, m}\left(\theta_{n}-\theta_{m}\right)-\sum_{g \in \Psi_{n}} p_{g}^{\mathrm{G}} - p_{i\in \Psi_n} -\sum_{w \in \Psi_{n}} p_{w}^{\mathrm{W}} =0 \quad: \lambda_{n} \quad \forall n&\\
+\theta_{(n=r e f)}=0 \quad: \gamma&\\
+0 \leq p_i\perp \underline{\mu}_i^I \geq 0&\\
+0 \leq (p_i - P_i^I) \perp \bar{\mu}_i^I \geq 0&\\
+    0 \leq p_g^G \perp \underline{\mu}_g^G \geq 0, \forall g&\\
+    0 \geq (p_g^G - P_g^{max}) \perp \bar{\mu}_g^G \geq 0, \forall g&\\
+    0 \leq p_w^W \perp \underline{\mu}_w^W \geq 0, \forall w&\\
+    0 \geq (p_w^W - P_w^{Cap}CF_w) \perp \bar{\mu}_w^W \geq 0, \forall g&\\
+  0\leq [B_{n,m}(\theta_n - \theta_m)+F_{n,m}] \perp \underline{\eta}_{n,m} \geq 0, \forall n, \forall m&\\
+  0\geq [B_{n,m}(\theta_n - \theta_m)-F_{n,m}] \perp \bar{\eta}_{n,m} \geq 0, \forall n, \forall m&\\
+    \end{cases}
+\end{equation}
+
+Also, the bi-linear term in the objective function can be reformulated as below considering $p_i\perp \underline{\mu}_i^I$, and $ \bar{\mu}_i^I p_i =\bar{\mu}_i^I P_i^I  $.
+\begin{equation}
+    \lambda_{n(i\in \Psi_n)}p_i = (\alpha_i + \bar{\mu}_i^I - \underline{\mu}_i^I)p_i = \alpha_i p_i -\bar{\mu}_i^I P_i^I
+\end{equation}
+
+From strong duality theory \cite{Gabriel2013}, 
+\begin{equation}
+\begin{split}
+  \sum_g C_{g} p_{g}^{\mathrm{G}} + \alpha_i p_i = -\bar{\mu}_i^I P_i^I -\sum_{g}\bar{\mu}_{g}^{\mathrm{G}}P_g^{max} - \sum_w\bar{\mu}_w^W P_w^{Cap}CF_w \\+ \sum_n\lambda_n\sum_{d \in \Psi_n}P_d^D  - \sum_{n, m} \bar{\eta}_{n, m} F_{n,m} -\sum_{n, m} \underline{\eta}_{n, m} F_{n,m}
+  \end{split}
+\end{equation}
+
+Then the objective function (\ref{5.obj}) can be reformulated as below, which is linear.
+\begin{equation}
+\begin{split}
+    \underset{\alpha_i}{\max}\left\{ 
+     -\sum_g C_{g} p_{g}^{\mathrm{G}}  -2\bar{\mu}_i^I P_i^I -\sum_{g}\bar{\mu}_{g}^{\mathrm{G}}P_g^{max} - \sum_w\bar{\mu}_w^W P_w^{Cap}CF_w + \sum_n\lambda_n\sum_{d \in \Psi_n}P_d^D  \right \} \\-\left\{ \sum_{n, m} \bar{\eta}_{n, m} F_{n,m} +\sum_{n, m} \underline{\eta}_{n, m} F_{n,m} + p_i C_i
+    \right \}
+    \end{split}
+\end{equation}
+\subsection{Case study}
+In this case study, we focus on the strategic offer of generator 12, who gets a revenue of 0 under market clearing before because the locational market price is exactly its generation cost. For generator 12, the strategic bid price is \$11.29, which is 3.7\% higher than its generation cost \$10.89, which would generate a profit of \$20.7. However, this is not necessarily the case for all generators. For generator 1, the profit remains zero even with strategic offer.
